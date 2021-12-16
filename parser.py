@@ -44,7 +44,10 @@ class Parser(object):
     @classmethod
     def __parse_release_list(cls, line):
         parsed_sub_line = dict()
-        (season_list, releases) = line.split(":")
+        try:
+            (season_list, releases) = line.split(":")
+        except ValueError as e:
+            raise SubLineParseFailed
         season_list = re.split(",|, | ", season_list)
 
         for season in season_list:
@@ -70,3 +73,5 @@ class Parser(object):
             parsed["notes"] = self.__parse_simple_text(series.get("Notes"))
             parsed["comparison"] = self.__parse_simple_text(series.get("Comparisons"))
             parsed_list.append(parsed)
+        
+        return parsed_list
