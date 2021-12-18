@@ -17,7 +17,7 @@ async def search(request):
     except:
         limit = None
     results = await index.search(query, limit = limit if limit else 5)
-    return JSONResponse({"echo": results})
+    return JSONResponse({"results": results})
 
 async def get_one(request):
     global index
@@ -25,7 +25,7 @@ async def get_one(request):
     if not (query:=request.query_params.get("q", None)):
         return JSONResponse({"error": "Missing required parameter 'q'"}, status_code=400)
     result = index.get_one(query)
-    return JSONResponse({"echo": result})
+    return JSONResponse({"results": result})
 
 async def on_start_up():
     url = "https://docs.google.com/spreadsheets/d/1emW2Zsb0gEtEHiub_YHpazvBd4lL4saxCwyPhbtxXYM/export?format=csv&gid=0"
@@ -42,6 +42,10 @@ async def on_shutdown():
     await index.clear()
     await update_index_task
     
+routes = [
+    Route("/search", search),
+    Route("/get", get_one)
+]
 
-app = Starlette(debug=False, routes=[Route("/search", search)], on_startup=[on_start_up], on_shutdown=[on_shutdown])
+app = Starlette(debug=False, routes=routes, on_startup=[on_start_up], on_shutdown=[on_shutdown])
 
