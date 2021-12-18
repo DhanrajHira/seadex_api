@@ -24,7 +24,7 @@ async def get_one(request):
     
     if not (query:=request.query_params.get("q", None)):
         return JSONResponse({"error": "Missing required parameter 'q'"}, status_code=400)
-    result = index.get_one(query)
+    result = await index.get_one(query)
     return JSONResponse({"results": result})
 
 async def on_start_up():
