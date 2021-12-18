@@ -25,7 +25,7 @@ async def get_one(request):
     if not (query:=request.query_params.get("q", None)):
         return JSONResponse({"error": "Missing required parameter 'q'"}, status_code=400)
     result = await index.get_one(query)
-    return JSONResponse({"results": result})
+    return JSONResponse(result)
 
 async def on_start_up():
     url = "https://docs.google.com/spreadsheets/d/1emW2Zsb0gEtEHiub_YHpazvBd4lL4saxCwyPhbtxXYM/export?format=csv&gid=0"
