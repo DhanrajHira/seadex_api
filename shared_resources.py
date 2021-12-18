@@ -1,5 +1,6 @@
 from asyncio import Event
-index = []
-is_index_ready = Event()
+from index import Index
+
+index = Index([])
 exit_event = Event()
 update_index_task = None

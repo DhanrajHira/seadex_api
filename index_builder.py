@@ -7,7 +7,7 @@ import pandas as pd
 import os
 
 
-async def update_index(frequency, url, parsed_index, is_index_ready, exit_event):
+async def update_index(frequency, url, parsed_index, exit_event):
     client = aiohttp.ClientSession()
     while not exit_event.is_set():
         _, pending = await asyncio.wait((asyncio.sleep(frequency), exit_event.wait()), return_when=FIRST_COMPLETED)
@@ -18,19 +18,17 @@ async def update_index(frequency, url, parsed_index, is_index_ready, exit_event)
             continue
 
         csv_file = await fetch_csv(client, url)
-        is_index_ready.clear()
 
-        #await write_csv_to_disk(csv_file)
+        await write_csv_to_disk(csv_file)
         await build_index(parsed_index)
         print("Rebuilt Index")
-
-        is_index_ready.set()
+        
     await client.close()
 
-async def build_index(parsed_index):
+async def build_index(index):
     raw_csv_file = pd.read_csv("index.csv", header=1, index_col=[0])
-    parsed_index.clear()
-    parsed_index.extend(Parser(raw_csv_file).parse())
+    parsed_list = Parser(raw_csv_file).parse()
+    await index.update(parsed_list)
 
 
 async def ensure_index_csv(url):
