@@ -7,7 +7,7 @@ import pandas as pd
 import os
 
 
-async def update_index(frequency, url, parsed_index, exit_event):
+async def update_index(frequency, tv_url, movies_url, tv_filename, movies_filename, parsed_index, exit_event):
     client = aiohttp.ClientSession()
     while not exit_event.is_set():
         _, pending = await asyncio.wait((asyncio.sleep(frequency), exit_event.wait()), return_when=FIRST_COMPLETED)
@@ -17,25 +17,30 @@ async def update_index(frequency, url, parsed_index, exit_event):
         if exit_event.is_set():
             continue
 
-        csv_file = await fetch_csv(client, url)
-
-        await write_csv_to_disk(csv_file)
-        await build_index(parsed_index)
+        tv_csv_file = await fetch_csv(client, tv_url)
+        await write_csv_to_disk(tv_filename, tv_csv_file)
+        
+        movies_csv_file = await fetch_csv(client, movies_url)
+        await write_csv_to_disk(movies_filename, movies_csv_file)
+        
+        await build_index(tv_filename, movies_filename, parsed_index)
         print("Rebuilt Index")
         
     await client.close()
 
-async def build_index(index):
-    raw_csv_file = pd.read_csv("index.csv", header=1, index_col=[0])
-    parsed_list = Parser(raw_csv_file).parse()
+async def build_index(tv_index_filename, movies_index_filename, index):
+    raw_tv_csv_file = pd.read_csv(tv_index_filename, header=1, index_col=[0])
+    parsed_list = Parser(raw_tv_csv_file).parse()
+    raw_movies_csv_file = pd.read_csv(movies_index_filename, header=1, index_col=[0])
+    parsed_list.extend(Parser(raw_movies_csv_file).parse())
     await index.update(parsed_list)
 
 
-async def ensure_index_csv(url):
-    if not os.path.exists("index.csv"):
+async def ensure_index_csv(filename, url):
+    if not os.path.exists(filename):
         async with aiohttp.ClientSession() as cl:
             csv_file = await fetch_csv(cl, url)
-            await write_csv_to_disk(csv_file)
+            await write_csv_to_disk(filename, csv_file)
 
 
 async def fetch_csv(client, url):
@@ -44,6 +49,6 @@ async def fetch_csv(client, url):
     return csv_file
 
 
-async def write_csv_to_disk(csv_file):
-    async with async_open("index.csv", "wb") as file:
+async def write_csv_to_disk(filename, csv_file):
+    async with async_open(filename, "wb") as file:
         await file.write(csv_file)
