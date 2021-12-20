@@ -48,7 +48,7 @@ class Parser(object):
             (season_list, releases) = line.split(":")
         except ValueError as e:
             raise SubLineParseFailed
-        season_list = re.split(",|, | ", season_list)
+        season_list = re.split(",|, ", season_list)
 
         for season in season_list:
             season = season.strip()
