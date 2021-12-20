@@ -1,5 +1,5 @@
 import asyncio
-from asyncio.tasks import FIRST_COMPLETED, wait_for
+from asyncio.tasks import FIRST_COMPLETED
 import aiohttp
 from aiofile import async_open
 from index_parser import Parser

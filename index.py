@@ -34,9 +34,9 @@ class Index(object):
         return self.__name_to_series_dict[fuzz_result[0]]
 
     async def clear(self):
-        async with self.__is_ready_event:
-            self.__list.clear()
-            self.__name_to_series_dict.clear() 
+        await self.__is_ready_event.wait()
+        self.__list.clear()
+        self.__name_to_series_dict.clear() 
 
     @staticmethod
     def __series_name_generator(index):
