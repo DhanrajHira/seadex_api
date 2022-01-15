@@ -1,14 +1,16 @@
 from math import isnan
 import re
 
+
 class SubLineParseFailed(Exception):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+
 class Parser(object):
     def __init__(self, panda_csv) -> None:
         self.__csv = panda_csv
-        
+
     @classmethod
     def __parse_simple_text(cls, raw_text):
         if isinstance(raw_text, float) and isnan(raw_text):
@@ -17,12 +19,12 @@ class Parser(object):
             return str(raw_text)
         else:
             return raw_text.strip()
-    
+
     @classmethod
     def __parse_best_releases(cls, raw_text):
         parsed = dict()
         raw_text = cls.__parse_simple_text(raw_text)
-        
+
         if raw_text == "":
             return parsed
 
@@ -33,12 +35,12 @@ class Parser(object):
                     try:
                         parsed_line = cls.__parse_release_list(sub_line)
                         parsed.update(parsed_line)
-                        current_season+=len(parsed_line)
+                        current_season += len(parsed_line)
                     except SubLineParseFailed:
                         return parsed
             else:
                 parsed[str(current_season)] = line
-                current_season+=1
+                current_season += 1
         return parsed
 
     @classmethod
@@ -58,8 +60,8 @@ class Parser(object):
                 parsed_sub_line[season[1:]] = releases.strip()
             else:
                 parsed_sub_line[season] = releases.strip()
-        
-        return parsed_sub_line 
+
+        return parsed_sub_line
 
     def parse(self):
         parsed_list = []
@@ -67,11 +69,15 @@ class Parser(object):
             series = row[1]
             parsed = dict()
             parsed["title"] = self.__parse_simple_text(series.get("Title"))
-            parsed["alt_title"] = self.__parse_simple_text(series.get("Alternate Title"))
-            parsed["best_release"] = self.__parse_best_releases(series.get("Best Release"))
-            parsed["alt_release"] = self.__parse_best_releases(series.get("Alternate Release"))
+            parsed["alt_title"] = self.__parse_simple_text(
+                series.get("Alternate Title"))
+            parsed["best_release"] = self.__parse_best_releases(
+                series.get("Best Release"))
+            parsed["alt_release"] = self.__parse_best_releases(
+                series.get("Alternate Release"))
             parsed["notes"] = self.__parse_simple_text(series.get("Notes"))
-            parsed["comparison"] = self.__parse_simple_text(series.get("Comparisons"))
+            parsed["comparison"] = self.__parse_simple_text(
+                self.__parse_simple_text(series.get("Comparisons")).split("\n"))
             parsed_list.append(parsed)
-        
+
         return parsed_list
