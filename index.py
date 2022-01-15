@@ -38,6 +38,9 @@ class Index(object):
         self.__list.clear()
         self.__name_to_series_dict.clear() 
 
+    def __len__(self):
+        return len(self.__list)
+
     @staticmethod
     def __series_name_generator(index):
         for series in index:
