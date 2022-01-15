@@ -1,0 +1,7 @@
+# Use this by renaming it to .env
+
+TV_INDEX_URL=https://docs.google.com/spreadsheets/d/1emW2Zsb0gEtEHiub_YHpazvBd4lL4saxCwyPhbtxXYM/export?format=csv&gid=0
+MOVIES_INDEX_URL=https://docs.google.com/spreadsheets/d/1emW2Zsb0gEtEHiub_YHpazvBd4lL4saxCwyPhbtxXYM/export?format=csv&gid=1589605198
+TV_INDEX_FILENAME=index_tv.csv
+MOVIES_INDEX_FILENAME=index_movies.csv
+INDEX_REBUILD_FREQ=1200
