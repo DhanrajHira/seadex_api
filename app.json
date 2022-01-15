@@ -1,0 +1,8 @@
+{
+    "name": "Seadex REST API",
+    "description": "Exposes releases.moe as a REST API",
+    "repository": "https://github.com/DhanrajHira/seadex_api",
+    "logo": "",
+    "keywords": ["anime", "seadex", "api", "rest", "restful"]   
+  }
+  

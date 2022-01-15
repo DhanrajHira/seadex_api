@@ -1,7 +1,8 @@
 # seadex_api
 [A Certain Smoke's Index](https://releases.moe) exposed as a REST API. The API uses fuzzy matching so the query only needs to be close enough to the original title to get appropriate results.
 
-Hosted instance: http://seadex.dbhira.com
+Hosted instance: http://seadex.dbhira.com or
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/DhanrajHira/seadex_api)
 
 ## Endpoints:
 -  `/search?q=<title>&limit=<limit>`
