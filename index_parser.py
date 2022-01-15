@@ -77,7 +77,7 @@ class Parser(object):
                 series.get("Alternate Release"))
             parsed["notes"] = self.__parse_simple_text(series.get("Notes"))
             parsed["comparison"] = self.__parse_simple_text(
-                self.__parse_simple_text(series.get("Comparisons")).split("\n"))
+                series.get("Comparisons")).split("\n")
             parsed_list.append(parsed)
 
         return parsed_list
