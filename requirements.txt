@@ -1,0 +1,7 @@
+starlette
+thefuzz
+aiohttp
+aiofile
+pandas
+uvicorn
+python-Levenshtein
