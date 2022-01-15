@@ -49,7 +49,7 @@ Hosted instance: http://seadex.dbhira.com
                     "3": "neko-kBaraka",
                     "4": "LostYears (WEB)"
                 },
-                "notes": "Arid is SCY with kBaraka subs added.\nScyrous will release his BD batch when the USBD of S4 releases. LY for S4 is SCY's web \nencodes with dual audio. OZR is Kawaiika + BDY's updated subs.\nSaizen OVAs are TV source so they have darkening in action scenes but the detail \noutweighs that. If you don't like the darkening then go for Kawaiika.\nBaws re-encoded TV video for OVA 1 and 4-5. A version with untouched video is\nuploaded here",
+                "notes": "Arid is SCY with kBaraka subs added.\nScyrous will release his BD batch when the USBD of S4 releases. <The notes shown in this response are truncated to save space>.",
                 "comparison": [
                     "S3: https://slow.pics/c/zZ2w9wmp",
                     "S4: https://slow.pics/c/PslbxDSG"
