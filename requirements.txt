@@ -1,7 +1,6 @@
 starlette
-thefuzz
+rapidfuzz
 aiohttp
 aiofile
 pandas
 uvicorn
-python-Levenshtein
