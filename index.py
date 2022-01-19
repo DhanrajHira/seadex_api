@@ -1,5 +1,4 @@
 from rapidfuzz import process
-from rapidfuzz.fuzz import QRatio
 from asyncio import Event
 
 
@@ -27,7 +26,7 @@ class Index(object):
     async def search(self, query, limit):
         await self.__is_ready_event.wait()
         fuzz_results = process.extract(
-            query, self.__series_title_list, limit=limit, scorer=QRatio)
+            query, self.__series_title_list, limit=limit)
         results = []
         for fr in fuzz_results:
             results.append(self.__name_to_series_dict[fr[0]])
@@ -36,7 +35,7 @@ class Index(object):
     async def get_one(self, query):
         await self.__is_ready_event.wait()
         fuzz_result = process.extractOne(
-            query, self.__series_title_list, scorer=QRatio)
+            query, self.__series_title_list)
         return self.__name_to_series_dict[fuzz_result[0]]
 
     async def clear(self):
