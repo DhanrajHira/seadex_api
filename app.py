@@ -2,32 +2,37 @@ import asyncio
 from starlette.applications import Starlette
 from starlette.responses import JSONResponse
 from starlette.routing import Route
+import orjson
 
 from shared_resources import TV_INDEX_FILENAME, TV_INDEX_URL, index, exit_event, update_index_task, INDEX_REBUILD_FREQ, MOVIES_INDEX_FILENAME, MOVIES_INDEX_URL
 from index_builder import build_index, ensure_index_csv, update_index
 
 
+class OrJsonResponse(JSONResponse):
+    def render(self, content):
+        return orjson.dumps(content)
+
 async def search(request):
     global index
 
     if not (query := request.query_params.get("q", None)):
-        return JSONResponse({"error": "Missing required parameter 'q'"}, status_code=400)
+        return OrJsonResponse({"error": "Missing required parameter 'q'"}, status_code=400)
     limit = request.query_params.get("limit", None)
     try:
         limit = int(limit)
     except:
         limit = None
     results = await index.search(query, limit=limit if limit else 5)
-    return JSONResponse({"results": results})
+    return OrJsonResponse({"results": results})
 
 
 async def get_one(request):
     global index
 
     if not (query := request.query_params.get("q", None)):
-        return JSONResponse({"error": "Missing required parameter 'q'"}, status_code=400)
+        return OrJsonResponse({"error": "Missing required parameter 'q'"}, status_code=400)
     result = await index.get_one(query)
-    return JSONResponse(result)
+    return OrJsonResponse(result)
 
 
 async def on_start_up():
