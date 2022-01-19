@@ -34,6 +34,10 @@ async def get_one(request):
     result = await index.get_one(query)
     return OrJsonResponse(result)
 
+async def get_all(request):
+    global index
+    all_series = await index.get_all()
+    return OrJsonResponse({"results": all_series})
 
 async def on_start_up():
     global index
@@ -55,7 +59,8 @@ async def on_shutdown():
 
 routes = [
     Route("/search", search),
-    Route("/get", get_one)
+    Route("/get", get_one),
+    Route("/getall", get_all)
 ]
 
 app = Starlette(debug=False, routes=routes, on_startup=[

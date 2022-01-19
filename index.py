@@ -38,9 +38,13 @@ class Index(object):
             query, self.__series_title_list)
         return self.__name_to_series_dict[fuzz_result[0]]
 
+    async def get_all(self):
+        return self.__list
+
     async def clear(self):
         await self.__is_ready_event.wait()
         self.__list.clear()
+        self.__series_title_list.clear()
         self.__name_to_series_dict.clear()
 
     def __len__(self):
