@@ -12,6 +12,7 @@ class OrJsonResponse(JSONResponse):
     def render(self, content):
         return orjson.dumps(content)
 
+
 async def search(request):
     global index
 
@@ -34,10 +35,16 @@ async def get_one(request):
     result = index.get_one(query)
     return OrJsonResponse(result)
 
+
 async def get_all(request):
     global index
     all_series = index.get_all()
     return OrJsonResponse({"results": all_series})
+
+
+async def base(request):
+    return OrJsonResponse({"endpoints": ["search", "get", "getall"]})
+
 
 async def on_start_up():
     global index
@@ -60,7 +67,8 @@ async def on_shutdown():
 routes = [
     Route("/search", search),
     Route("/get", get_one),
-    Route("/getall", get_all)
+    Route("/getall", get_all),
+    Route("/", base)
 ]
 
 app = Starlette(debug=False, routes=routes, on_startup=[
