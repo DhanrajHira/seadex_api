@@ -91,3 +91,4 @@ Hosted instance: http://seadex.dbhira.com or
         ]
     }
     ```
+-   `/getall` Get all the series in the index. The response has the same structure as the `/search` except it has all the series.
