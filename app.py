@@ -22,7 +22,7 @@ async def search(request):
         limit = int(limit)
     except:
         limit = None
-    results = await index.search(query, limit=limit if limit else 5)
+    results = index.search(query, limit=limit if limit else 5)
     return OrJsonResponse({"results": results})
 
 
@@ -31,12 +31,12 @@ async def get_one(request):
 
     if not (query := request.query_params.get("q", None)):
         return OrJsonResponse({"error": "Missing required parameter 'q'"}, status_code=400)
-    result = await index.get_one(query)
+    result = index.get_one(query)
     return OrJsonResponse(result)
 
 async def get_all(request):
     global index
-    all_series = await index.get_all()
+    all_series = index.get_all()
     return OrJsonResponse({"results": all_series})
 
 async def on_start_up():
@@ -54,7 +54,7 @@ async def on_shutdown():
     global update_index_task
     global index
     exit_event.set()
-    await index.clear()
+    index.clear()
     await update_index_task
 
 routes = [

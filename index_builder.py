@@ -35,7 +35,7 @@ async def build_index(tv_index_filename, movies_index_filename, index):
     raw_movies_csv_file = pd.read_csv(
         movies_index_filename, header=1, index_col=[0])
     parsed_list.extend(Parser(raw_movies_csv_file).parse())
-    await index.update(parsed_list)
+    index.update(parsed_list)
 
 
 async def ensure_index_csv(filename, url):
